@@ -6,7 +6,8 @@ import json
 import os
 import random
 
-from main import config
+with open("config.json", 'r', encoding='utf-8') as file:
+    config = json.load(file)
 
 guild_id = config["guild_id"]
 join_channel = config["join_channel"]

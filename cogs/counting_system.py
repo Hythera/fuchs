@@ -4,7 +4,8 @@ from discord import app_commands
 from discord import ui
 import json
 
-from main import config
+with open("config.json", 'r', encoding='utf-8') as file:
+    config = json.load(file)
 
 def save_to_json(location, content):
     with open(location, 'w') as file:
