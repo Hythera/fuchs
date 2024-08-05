@@ -97,8 +97,12 @@ class TicketMenu(discord.ui.Select):
                     if role:
                         await ticket_channel.set_permissions(role, read_messages=True, send_messages=True)
 
-
-            embed = discord.Embed(title=f"{emoji["mail"]} TICKET", description=f"> **Ticket Informationen**\n > - Nutzer: {interaction.user.mention}\n > - Grund: `{reasons[value]}`\n> - Erstellt: <t:{int(time.time())}:R> \n\n> **Informationen an Nutzer**\n > - Bitte beschreibe dein Anliegen so genau wie möglich, damit das Team so schnell wie möglich helfen kann.\n > - Bitte habe etwas Geduld, bis das Team sich bei dir meldet.", color=color["grey"])
+            description = f"> **Ticket Informationen**\n > - Nutzer: {interaction.user.mention}\n > - Grund: `{reasons[value]}`\n> - Erstellt: <t:{int(time.time())}:R> \n\n> **Informationen an Nutzer**"
+            if self.values[0] == "privat":
+                description += "\n > - Das hier ist ein privater Chat-Raum mit TheFoxCraft. Nur du und TheFoxCraft können hier chatten.\n > - Bitte habe etwas Geduld, bis das TheFoxCraft, sich bei dir meldet, da er nicht immer Zeit hat."
+            else:
+                description += "\n > - Bitte beschreibe dein Anliegen so genau wie möglich, damit das Team so schnell wie möglich helfen kann.\n > - Bitte habe etwas Geduld, bis das Team sich bei dir meldet."
+            embed = discord.Embed(title=f"{emoji["mail"]} TICKET", description=description, color=color["grey"])
             embed.set_image(url=images["grey_ticket_line"])
             await ticket_channel.send(embed=embed, view=TicketButtons(self.client))
 
