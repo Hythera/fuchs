@@ -4,3 +4,4 @@
 .env
 config.json
 __pycache__
+test.py

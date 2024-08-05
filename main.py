@@ -37,8 +37,7 @@ if not os.path.exists("json/list_images.json"):
 
 class Client(commands.Bot):
     def __init__(self):
-        intents = discord.Intents.default()
-        intents.message_content = True
+        intents = discord.Intents.all()
         super().__init__(command_prefix='/syntheria', intents=intents)
         
         self.cogslist = ['.'.join(file.relative_to('cogs').with_suffix('').parts) for file in Path('cogs').rglob('*.py') if not file.name.startswith('__')]
@@ -56,7 +55,7 @@ class Client(commands.Bot):
         self.add_view(ticket_system.TicketButtons(client))
         self.add_view(ticket_system.DeleteTicketButtons(client))
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+         #os.system('cls' if os.name == 'nt' else 'clear')
         prfx = (Back.BLACK + Fore.CYAN + time.strftime("%H:%M:%S", time.gmtime()) + Back.RESET + Fore.WHITE + Style.NORMAL)
         print(prfx + " Logged in as " + Fore.BLUE + self.user.name)
         print(prfx + " Bot ID " + Fore.BLUE + str(self.user.id))
