@@ -55,7 +55,7 @@ class Client(commands.Bot):
         self.add_view(ticket_system.TicketMenuView(client))
         self.add_view(ticket_system.TicketButtons(client))
         self.add_view(ticket_system.DeleteTicketButtons(client))
-        
+
         os.system('cls' if os.name == 'nt' else 'clear')
         prfx = (Back.BLACK + Fore.CYAN + time.strftime("%H:%M:%S", time.gmtime()) + Back.RESET + Fore.WHITE + Style.NORMAL)
         print(prfx + " Logged in as " + Fore.BLUE + self.user.name)
@@ -63,6 +63,7 @@ class Client(commands.Bot):
         print(prfx + " Discord Version " + Fore.BLUE+ discord.__version__)
         print(prfx + " Python Version " + Fore.BLUE + str(platform.python_version()))
         print (prfx + " Cogs Loaded " + Fore.BLUE + str(len(self.cogslist)))
+        await self.tree.sync()
         synced = await self.tree.sync(guild=discord.Object(id=config["guild_id"]))
         print(prfx + " Slash CMDs Synced " + Fore.BLUE + str(len(synced)) + " Commands")
         print("")
