@@ -11,8 +11,7 @@ from colorama import Fore, Back, Style
 import platform
 
 from cogs import ticket_system
-#from cogs.ticket_system import TicketButtons
-#from cogs.ticket_system import DeleteTicketButtons
+from cogs import channel_system
 
 load_dotenv()
 with open("config.json", 'r', encoding='utf-8') as file:
@@ -52,6 +51,7 @@ class Client(commands.Bot):
             await self.load_extension("cogs."+cog)
 
     async def on_ready(self):
+        self.add_view(channel_system.VoiceButtons(client))
         self.add_view(ticket_system.TicketMenuView(client))
         self.add_view(ticket_system.TicketButtons(client))
         self.add_view(ticket_system.DeleteTicketButtons(client))
