@@ -55,7 +55,7 @@ class Client(commands.Bot):
         self.add_view(ticket_system.TicketButtons(client))
         self.add_view(ticket_system.DeleteTicketButtons(client))
 
-         #os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')
         prfx = (Back.BLACK + Fore.CYAN + time.strftime("%H:%M:%S", time.gmtime()) + Back.RESET + Fore.WHITE + Style.NORMAL)
         print(prfx + " Logged in as " + Fore.BLUE + self.user.name)
         print(prfx + " Bot ID " + Fore.BLUE + str(self.user.id))

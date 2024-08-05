@@ -20,12 +20,14 @@ with open("json/tickets.json", 'r') as file:
 emojis = {
     "allgemein": "📨",
     "bewerbung": "📄",
+    "privat": "👀",
     "community_server_bewerbung": "➕",
     "entbannung": "🚫"
 }
 reasons = {
     "allgemein": "Allgemein",
     "bewerbung": "Bewerbung",
+    "privat": "Privat",
     "community_server_bewerbung": "Community Server Bewerbung",
     "entbannung": "Entbannungsantrag"
 }
@@ -52,6 +54,7 @@ class TicketMenu(discord.ui.Select):
     def __init__(self, client:commands.Bot):
         options = [discord.SelectOption(label="Allgemeiner Support", description="Allgemeiner Support / Fragen", emoji=emoji["mail"], value="allgemein"),
                    discord.SelectOption(label="Team Bewerbung", description="Bewirb dich als Teammitglied", emoji=emoji["file_text"], value="bewerbung"),
+                   discord.SelectOption(label="Privat", description="Erstelle ein privates Ticket mit TheFoxCraft", emoji=emoji["eye_off"], value="privat"),
                    discord.SelectOption(label="Community Server Bewerbung", description="Bewirb dich für den Community Server", emoji=emoji["user_check"], value="community_server_bewerbung"),
                    discord.SelectOption(label="Entbannungsantrag", description="Beantrage einen Entbannungsantrag", emoji=emoji["block"], value="entbannung")]
         super().__init__(placeholder="Wähle eine Option aus", options=options, custom_id="ticket_options")
@@ -88,10 +91,11 @@ class TicketMenu(discord.ui.Select):
 
             await ticket_channel.set_permissions(ticket_channel.guild.default_role,read_messages=False, send_messages=False)
             await ticket_channel.set_permissions(interaction.user, read_messages=True, send_messages=True)
-            for role_id in ticket_staff:
-                role = interaction.guild.get_role(role_id)
-                if role:
-                    await ticket_channel.set_permissions(role, read_messages=True, send_messages=True)
+            if self.values[0] != "privat":
+                for role_id in ticket_staff:
+                    role = interaction.guild.get_role(role_id)
+                    if role:
+                        await ticket_channel.set_permissions(role, read_messages=True, send_messages=True)
 
 
             embed = discord.Embed(title=f"{emoji["mail"]} TICKET", description=f"> **Ticket Informationen**\n > - Nutzer: {interaction.user.mention}\n > - Grund: `{reasons[value]}`\n> - Erstellt: <t:{int(time.time())}:R> \n\n> **Informationen an Nutzer**\n > - Bitte beschreibe dein Anliegen so genau wie möglich, damit das Team so schnell wie möglich helfen kann.\n > - Bitte habe etwas Geduld, bis das Team sich bei dir meldet.", color=color["grey"])
