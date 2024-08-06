@@ -2,3 +2,5 @@ python-dotenv
 discord
 colorama
 requests
+aiomysql
+aiofiles

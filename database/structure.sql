@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `level_users` (
+    `client_id` BIGINT NOT NULL,
+    `xp` BIGINT NOT NULL DEFAULT 0,
+    `messages` BIGINT NOT NULL DEFAULT 0,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`client_id`)
+)
