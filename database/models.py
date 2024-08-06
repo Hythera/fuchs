@@ -31,7 +31,8 @@ class LevelUser:
         return self
 
     async def add_data(self, xp: int, messages: int = None):
-        self.xp += xp
+        if xp is not None:
+            self.xp += xp
         if messages is not None:
             self.messages += 1
         await self.save()

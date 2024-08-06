@@ -7,7 +7,7 @@ async def get_pool(autocommit: bool = True) -> Pool:
     database_host = os.getenv('database_host')
     database_user = os.getenv('database_user')
     database_password = os.getenv('database_password')   
-    database_name = os.getenv('database_name ')
+    database_name = os.getenv('database_name')
 
     host, port = database_host.split(':')
     return await aiomysql.create_pool(
