@@ -71,5 +71,8 @@ class LevelUser:
     def get_level(self):
         return int((self.xp / 50) ** (1 / 1.5))
     
-    def get_xp_for_next_level(self):
-        return int(((self.get_level() + 1) ** 1.5) * 50)
+    def get_xp_for_level(self, level: int = None):
+        if level:
+            return int((level ** 1.5) * 50)
+        else:
+            return int(((self.get_level() + 1) ** 1.5) * 50)
