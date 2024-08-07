@@ -30,13 +30,15 @@ class LevelUser:
         await pool.wait_closed()
         return self
 
-    async def add_data(self, xp: int, messages: int = None):
+    async def add_data(self, xp: int, messages: int = None) -> bool:
+        level_before = self.get_data()
         if xp is not None:
             self.xp += xp
+        level_after = self.get_data()
         if messages is not None:
             self.messages += 1
         await self.save()
-        return self
+        return level_after > level_before
 
     def get_data(self):
         return [int(self.xp ** 0.3), self.messages]
