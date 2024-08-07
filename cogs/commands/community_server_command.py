@@ -19,7 +19,7 @@ class community_server_command(commands.Cog):
     @app_commands.guilds(int(config["guild_id"]))
     @app_commands.default_permissions(administrator=True)
     @app_commands.choices(status=[app_commands.Choice(name="An", value="True"), app_commands.Choice(name="Aus", value="False")])
-    async def test(self, interaction: discord.Interaction, status: app_commands.Choice[str]):
+    async def community_server_status(self, interaction: discord.Interaction, status: app_commands.Choice[str]):
         self.client.storage["community_server_status"] = status.value
         save_to_json("json/data.json", self.client.storage)
         await interaction.response.send_message(f"✅ Status auf `{status.name}` gesetzt.", ephemeral=True)

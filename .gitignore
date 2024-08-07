@@ -1,6 +1,7 @@
 /0old
 /.venv
 /json
+/testing
 .env
 config.json
 __pycache__

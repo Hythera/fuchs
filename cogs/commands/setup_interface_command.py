@@ -13,7 +13,7 @@ class setup_interface_command(commands.Cog):
     @app_commands.guild_only()
     @app_commands.guilds(int(config["guild_id"]))
     @app_commands.default_permissions(administrator=True)
-    async def add_global(self, interaction: discord.Interaction):
+    async def setup_interface(self, interaction: discord.Interaction):
         channel = interaction.channel
         embed = discord.Embed(title="Voice Interface", description="Mit diesem **Interface** kannst du deinen temporären Kanal bearbeiten.", color=0x6d6f78)
         embed.set_image(url=config["temp_description"])

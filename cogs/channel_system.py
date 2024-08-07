@@ -171,7 +171,7 @@ class NameModal(ui.Modal):
         super().__init__(title="Interface")
         self.client = client
         self.channel_id = channel
-    value = discord.ui.TextInput(label="Kanalname", placeholder="Wähle einen neuen Kanalnamen", min_length=2, max_length=10, style=discord.TextStyle.short)
+    value = discord.ui.TextInput(label="Kanalname", placeholder="Wähle einen neuen Kanalnamen", min_length=2, max_length=50, style=discord.TextStyle.short)
     async def on_submit(self, interaction: discord.Interaction):
         channel = self.client.get_channel(self.channel_id)
         if channel:
