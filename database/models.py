@@ -31,6 +31,30 @@ class LevelUser:
         pool.close()
         await pool.wait_closed()
         return self
+    
+    async def get_position(self) -> int:
+        pool: Pool = await get_pool()
+        async with pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute("SELECT COUNT(*) + 1 FROM level_users WHERE xp > (SELECT xp FROM level_users WHERE client_id = %s)", (self.client_id,))
+                result = await cursor.fetchone()
+                position = result[0]
+
+        pool.close()
+        await pool.wait_closed()
+        return position
+    
+    @staticmethod
+    async def get_top_users() -> list:
+        pool: Pool = await get_pool()
+        async with pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute("SELECT client_id, xp FROM level_users ORDER BY xp DESC LIMIT 10")
+                results = await cursor.fetchall()
+
+        pool.close()
+        await pool.wait_closed()
+        return results
 
     async def add_data(self, xp: int = None, messages: int = None) -> bool:
         level_before = self.get_level()
