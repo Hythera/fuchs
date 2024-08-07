@@ -41,14 +41,22 @@ class get_level_command(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
 
-    @app_commands.command(name="level", description="Zeigt dir dein Level an")
+    @app_commands.command(name="level", description="Zeigt dir dein Level oder das von jeman anderem an")
+    @app_commands.describe(member="Gib einen Nutzer an")
     @app_commands.guild_only()
     @app_commands.guilds(int(config["guild_id"]))
-    async def add_global(self, interaction: discord.Interaction):
-        level_user = await LevelUser(interaction.user.id).load()
-
-        file = await generate_card(interaction.user, level_user.xp, level_user.get_xp_for_next_level(), level_user.get_level(), str(await level_user.get_position()))
-        
+    async def add_global(self, interaction: discord.Interaction, member: discord.Member = None):
+        if member: 
+            if member.bot:
+                await interaction.response.send_message("❌ Du kannst das Level von APPs nicht einsehen.", ephemeral=True)
+                return
+            else:
+                user = member
+        else:
+            user = interaction.user
+            
+        level_user = await LevelUser(user.id).load()
+        file = await generate_card(user, level_user.xp, level_user.get_xp_for_next_level(), level_user.get_level(), str(await level_user.get_position()))
         await interaction.response.send_message(file=file, ephemeral=True)
 
 async def setup(client:commands.Bot) -> None:

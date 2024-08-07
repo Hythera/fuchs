@@ -1,6 +1,8 @@
 from aiomysql import Pool
 from database import get_pool
 
+level_table = "level_users"
+
 class LevelUser:
     def __init__(self, client_id: int):
         self.client_id = client_id
@@ -11,10 +13,10 @@ class LevelUser:
         pool: Pool = await get_pool()
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute("SELECT * FROM `level_users` WHERE `client_id`= %s", self.client_id)
+                await cursor.execute(f"SELECT * FROM `{level_table}` WHERE `client_id`= %s", self.client_id)
                 result = await cursor.fetchone()
                 if result is None:
-                    await cursor.execute("INSERT INTO `level_users` (`client_id`) VALUES (%s)", self.client_id)
+                    await cursor.execute(f"INSERT INTO `{level_table}` (`client_id`) VALUES (%s)", self.client_id)
                 else:
                     self.xp = result[1]
                     self.messages = result[2]
@@ -27,7 +29,7 @@ class LevelUser:
         pool: Pool = await get_pool()
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute("UPDATE `level_users` SET `xp` = %s, `messages` = %s WHERE `client_id` = %s", (self.xp, self.messages, self.client_id))
+                await cursor.execute(f"UPDATE `{level_table}` SET `xp` = %s, `messages` = %s WHERE `client_id` = %s", (self.xp, self.messages, self.client_id))
         pool.close()
         await pool.wait_closed()
         return self
@@ -36,10 +38,9 @@ class LevelUser:
         pool: Pool = await get_pool()
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute("SELECT COUNT(*) + 1 FROM level_users WHERE xp > (SELECT xp FROM level_users WHERE client_id = %s)", (self.client_id,))
+                await cursor.execute(f"SELECT COUNT(*) + 1 FROM `{level_table}` WHERE `xp` > (SELECT `xp` FROM `{level_table}` WHERE `client_id` = %s)", (self.client_id,))
                 result = await cursor.fetchone()
                 position = result[0]
-
         pool.close()
         await pool.wait_closed()
         return position
@@ -49,9 +50,8 @@ class LevelUser:
         pool: Pool = await get_pool()
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute("SELECT client_id, xp FROM level_users ORDER BY xp DESC LIMIT 10")
+                await cursor.execute(f"SELECT `client_id`, `xp` FROM `{level_table}` ORDER BY `xp` DESC LIMIT 10")
                 results = await cursor.fetchall()
-
         pool.close()
         await pool.wait_closed()
         return results
