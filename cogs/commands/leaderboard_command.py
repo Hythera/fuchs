@@ -27,7 +27,7 @@ class leaderboard_command(commands.Cog):
             pos += 1
         embed = discord.Embed(title="Level Leaderboard", description=user_list, color=0xa7acb4)
         embed.set_thumbnail(url=interaction.guild.icon.url)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed=embed)
 
 async def setup(client:commands.Bot) -> None:
     await client.add_cog(leaderboard_command(client))

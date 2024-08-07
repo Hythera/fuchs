@@ -54,10 +54,10 @@ class get_level_command(commands.Cog):
                 user = member
         else:
             user = interaction.user
-            
+        await interaction.response.defer()
         level_user = await LevelUser(user.id).load()
         file = await generate_card(user, level_user.xp, level_user.get_xp_for_next_level(), level_user.get_level(), str(await level_user.get_position()))
-        await interaction.response.send_message(file=file, ephemeral=True)
+        await interaction.edit_original_response(attachments=[file])
 
 async def setup(client:commands.Bot) -> None:
     await client.add_cog(get_level_command(client))
