@@ -45,7 +45,7 @@ class get_level_command(commands.Cog):
     @app_commands.describe(member="Gib einen Nutzer an")
     @app_commands.guild_only()
     @app_commands.guilds(int(config["guild_id"]))
-    async def add_global(self, interaction: discord.Interaction, member: discord.Member = None):
+    async def level(self, interaction: discord.Interaction, member: discord.Member = None):
         if member: 
             if member.bot:
                 await interaction.response.send_message("❌ Du kannst das Level von APPs nicht einsehen.", ephemeral=True)

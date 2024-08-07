@@ -13,7 +13,7 @@ class leaderboard_command(commands.Cog):
     @app_commands.command(name="leaderboard", description="Zeigt die Top 10 Nutzer an")
     @app_commands.guild_only()
     @app_commands.guilds(int(config["guild_id"]))
-    async def add_global(self, interaction: discord.Interaction):
+    async def leaderboard(self, interaction: discord.Interaction):
         level_user = await LevelUser(interaction.user.id).load()
         top_raw = await level_user.get_top_users()
         
