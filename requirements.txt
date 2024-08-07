@@ -4,5 +4,4 @@ colorama
 requests
 aiomysql
 aiofiles
-pillow
 easy_pil
