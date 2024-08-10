@@ -21,6 +21,8 @@ class activity_listener(commands.Cog):
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
+        if not message.guild:
+            return
         
         if message.author.id in self.last_activities:
             if self.last_activities[message.author.id] + datetime.timedelta(seconds=5) > message.created_at:
