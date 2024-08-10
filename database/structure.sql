@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `level_users` (
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`client_id`)
 );
-CREATE TABLE IF NOT EXISTS `economy_users_test` (
+CREATE TABLE IF NOT EXISTS `economy_users` (
     `client_id` BIGINT NOT NULL,
     `coins` BIGINT NOT NULL DEFAULT 0,
     `multiplier` FLOAT NOT NULL DEFAULT 1,
