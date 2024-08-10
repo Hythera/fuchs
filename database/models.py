@@ -2,6 +2,7 @@ from aiomysql import Pool
 from database import get_pool
 
 level_table = "level_users"
+economy_table = "economy_users"
 
 class LevelUser:
     def __init__(self, client_id: int):
@@ -76,3 +77,26 @@ class LevelUser:
             return int((level ** 1.5) * 50)
         else:
             return int(((self.get_level() + 1) ** 1.5) * 50)
+
+class EconomyUser:
+    def __init__(self, client_id: int):
+        self.client_id = client_id
+        self.coins = 0
+        self.multiplier = 1
+        self.job = None
+    
+    async def load(self):
+        pool: Pool = await get_pool()
+        async with pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute(f"SELECT * FROM `{economy_table}` WHERE `client_id`= %s", self.client_id)
+                result = await cursor.fetchone()
+                if result is None:
+                    await cursor.execute(f"INSERT INTO `{economy_table}` (`client_id`) VALUES (%s)", self.client_id)
+                else:
+                    self.coins = result[1]
+                    self.multiplier = result[2]
+                    self.job = result[3]
+        pool.close()
+        await pool.wait_closed()
+        return self
