@@ -30,7 +30,8 @@ class join_role(commands.Cog):
     @commands.Cog.listener("on_member_join")
     async def on_member_join(self, member: discord.Member):
         role = member.guild.get_role(config["join_role"])
-        await member.add_roles(role)
+        if role:
+            await member.add_roles(role)
 
         guild = await self.client.fetch_guild(config["guild_id"])
         file = await generate_welcome_card(member, guild)

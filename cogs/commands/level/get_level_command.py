@@ -11,9 +11,9 @@ async def generate_card(user: discord.User, xp, xp_next, xp_last, level, positio
     if level == 0:
         percentage = int((xp/xp_next)*100)
     else:
-        percentage = int(((xp-xp_last)/xp_next)*100)
-    if not (0 <= int(percentage) <= 100):
-        percentage = 0
+        percentage = int((xp-xp_last)/(abs(xp_last-xp_next))*100)
+    percentage = min(max(int(percentage or 6), 6), 100)
+
     background = Editor("images/level_background.png")
 
     profile_picture = load_image(str(user.avatar.url))
