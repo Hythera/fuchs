@@ -2,6 +2,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
+import asyncio
 
 from main import config
 from database.models import LevelUser
@@ -25,6 +26,7 @@ class level_leaderboard_command(commands.Cog):
             user: discord.User = await self.client.fetch_user(u[0])
             top_users[u[0]] = [user.name, u[1]]
             user_list += f"**#{pos}** • {user.name} • {int((u[1] / 50) ** (1 / 1.5))}\n"
+            await asyncio.sleep(0.1)
             pos += 1
         embed = discord.Embed(title="Level Leaderboard", description=user_list, color=0xa7acb4)
         embed.set_thumbnail(url=interaction.guild.icon.url)
