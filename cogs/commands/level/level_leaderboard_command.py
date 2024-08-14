@@ -14,6 +14,7 @@ class level_leaderboard_command(commands.Cog):
     @app_commands.guild_only()
     @app_commands.guilds(int(config["guild_id"]))
     async def level_leaderboard(self, interaction: discord.Interaction):
+        await interaction.response.defer()
         level_user = await LevelUser(interaction.user.id).load()
         top_raw = await level_user.get_top_users()
         
@@ -27,7 +28,7 @@ class level_leaderboard_command(commands.Cog):
             pos += 1
         embed = discord.Embed(title="Level Leaderboard", description=user_list, color=0xa7acb4)
         embed.set_thumbnail(url=interaction.guild.icon.url)
-        await interaction.response.send_message(embed=embed)
+        await interaction.edit_original_response(embed=embed)
 
 async def setup(client:commands.Bot) -> None:
     await client.add_cog(level_leaderboard_command(client))
