@@ -1,5 +1,6 @@
 from aiomysql import Pool
 from database import get_pool
+from datetime import datetime, timedelta
 
 level_table = "level_users"
 economy_table = "economy_users"
@@ -83,7 +84,9 @@ class EconomyUser:
         self.client_id = client_id
         self.coins = 0
         self.multiplier = 1
-        self.job = None
+        self.job = "None"
+        self.daily_streak = 0
+        self.last_daily = datetime.strptime(str(datetime.now().replace(microsecond=0)-timedelta(days=1)), '%Y-%m-%d %H:%M:%S')
     
     async def load(self):
         pool: Pool = await get_pool()
@@ -97,6 +100,44 @@ class EconomyUser:
                     self.coins = result[1]
                     self.multiplier = result[2]
                     self.job = result[3]
+                    self.daily_streak = result[4]
+                    self.last_daily = result[5]
         pool.close()
         await pool.wait_closed()
         return self
+    
+    async def save(self):
+        pool: Pool = await get_pool()
+        async with pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute(f"UPDATE `{economy_table}` SET `coins`= %s, `multiplier` = %s, `job` = %s, `daily_streak` = %s, `last_daily` = %s WHERE `client_id` = %s", (self.coins, self.multiplier, self.job, self.daily_streak, self.last_daily, self.client_id))
+        pool.close()
+        await pool.wait_closed()
+        return self
+    
+    @staticmethod
+    async def get_top_users() -> list:
+        pool: Pool = await get_pool()
+        async with pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute(f"SELECT `client_id`, `coins`, `daily_streak` FROM `{economy_table}` ORDER BY `coins` DESC LIMIT 10")
+                results = await cursor.fetchall()
+        pool.close()
+        await pool.wait_closed()
+        return results
+    
+    async def add_data(self, coins: int = None, multiplier: float = None, job: str = None, daily_streak: int = None, last_daily = None) -> object:
+        if coins:
+            self.coins += coins
+        if multiplier:
+            self.multiplier = multiplier
+        if job:
+            self.job = job
+        if daily_streak:
+            self.daily_streak = daily_streak
+        if last_daily:
+            self.last_daily = last_daily
+        await self.save()
+
+        return self
+        

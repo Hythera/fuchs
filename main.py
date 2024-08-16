@@ -5,6 +5,7 @@ from pathlib import Path
 
 import discord
 from discord.ext import commands
+from discord import app_commands
 
 import time
 from colorama import Fore, Back, Style
@@ -40,6 +41,19 @@ if not os.path.exists("json/list_images.json"):
     with open("json/list_images.json", 'w', encoding='utf-8') as file:
         json.dump({}, file, ensure_ascii=False, indent=4)
 
+async def on_tree_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
+    if isinstance(error, app_commands.CommandOnCooldown):
+        if error.retry_after >= 60:
+            if interaction.command.name == "work":
+                await interaction.response.send_message(content=f"⌛ Bite warte **{round(error.retry_after/60)}** Minuten, bevor du wieder arbeiten kannst.", ephemeral=True)   
+            else:
+                await interaction.response.send_message(content=f"⌛ Bite warte **{round(error.retry_after/60)}** Minuten, bevor du diesen Befehl noch einmal verwenden kannst.", ephemeral=True)
+        else:
+            if interaction.command.name == "work":
+                await interaction.response.send_message(content=f"⌛ Bite warte **{round(error.retry_after)}** Sekunden, bevor du wieder arbeiten kannst.", ephemeral=True)
+            else:                
+                await interaction.response.send_message(content=f"⌛ Bite warte **{round(error.retry_after)}** Sekunden, bevor du diesen Befehl noch einmal verwenden kannst.", ephemeral=True)
+
 async def init_db():
     pool: Pool = await get_pool()
     async with aiofiles.open('database/structure.sql') as file:
@@ -58,10 +72,10 @@ class Client(commands.Bot):
     def __init__(self):
         intents = discord.Intents.all()
         super().__init__(command_prefix='/syntheria', intents=intents)
-        
-        asyncio.run(init_db())
-        self.cogslist = ['.'.join(file.relative_to('cogs').with_suffix('').parts) for file in Path('cogs').rglob('*.py') if not file.name.startswith('__')]
 
+        asyncio.run(init_db())
+        self.tree.on_error = on_tree_error
+        self.cogslist = ['.'.join(file.relative_to('cogs').with_suffix('').parts) for file in Path('cogs').rglob('*.py') if not file.name.startswith('__')]
         self.storage = storage
 
 

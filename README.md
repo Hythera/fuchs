@@ -47,6 +47,17 @@ Erstelle nun eine Datei namens `config.json` und fülle sie mit deinen Konfigura
     "temp_chanels_category": 1234567890123456789,
   
     "counting_channel": 1234567890123456789,
+
+    "daily_rewards": {
+    "0": 100,
+    "1": 200,
+    "2": 300,
+    "3": 400,
+    "4": 500,
+    "5": 600,
+    "6": 700,
+    "7": 1000
+    },
   
     "bot_status": "🦊 Fuchs"
     
@@ -57,6 +68,8 @@ Als nächstes startest du die APP, indem du die main.py ausführst und alle Abh�
 
 ```json
 {
+    "standard_profile_picture": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/images/standard_profile_picture.png",
+
     "grey_ticket_line": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/line_icons/ticket_grey.png",
     "red_ticket_line": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/line_icons/ticket_red.png",
     "green_ticket_line": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/line_icons/ticket_green.png",
@@ -68,7 +81,7 @@ Als nächstes startest du die APP, indem du die main.py ausführst und alle Abh�
 }
 ```
 
-Öffne nun die `list_emoji.json` und Füge deine Emojis (erstelle diese auf einem Discord Server oder auf deiner APP und kopiere deren ID und Namenin dem Format `<:name:id>`). Die Icons von der Haupt APP kommen von [Feathericons.com](https://feathericons.com/).
+Öffne nun die `list_emoji.json` und Füge deine Emojis (erstelle diese auf einem Discord Server oder auf deiner APP und kopiere deren ID und Namenin dem Format `<:name:id>`). Die Icons von der Haupt APP kommen von [feathericons.com](https://feathericons.com/).
 
 ```json
 {

@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -19,13 +18,11 @@ class level_leaderboard_command(commands.Cog):
         level_user = await LevelUser(interaction.user.id).load()
         top_raw = await level_user.get_top_users()
         
-        top_users = {}
         user_list = ""
         pos = 1  
         for u in top_raw:
             user: discord.User = self.client.get_user(u[0])
             if user:
-                top_users[u[0]] = [user.name, u[1]]
                 user_list += f"**#{pos}** • {user.name} • {int((u[1] / 50) ** (1 / 1.5))}\n"
             else:
                 user_list += f"**#{pos}** • `Null` • {int((u[1] / 50) ** (1 / 1.5))}\n"
