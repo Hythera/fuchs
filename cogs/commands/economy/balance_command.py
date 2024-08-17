@@ -33,8 +33,8 @@ class balance_command(commands.Cog):
         else:
             embed.set_author(icon_url=images["standard_profile_picture"], name=user.name)
         embed.add_field(name="Coins", value=f"{economy_user.coins} 🪙", inline=True)
-        embed.add_field(name="Bank", value="0 🪙", inline=True)
-        embed.add_field(name="Gesamt", value=f"{economy_user.coins} 🪙", inline=True)
+        embed.add_field(name="Bank", value=f"{economy_user.bank} 🪙", inline=True)
+        embed.add_field(name="Gesamt", value=f"{economy_user.coins + economy_user.bank} 🪙", inline=True)
         await interaction.response.send_message(embed=embed)
 
 async def setup(client:commands.Bot) -> None:

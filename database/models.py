@@ -83,6 +83,7 @@ class EconomyUser:
     def __init__(self, client_id: int):
         self.client_id = client_id
         self.coins = 0
+        self.bank = 0
         self.multiplier = 1
         self.job = "None"
         self.daily_streak = 0
@@ -95,13 +96,14 @@ class EconomyUser:
                 await cursor.execute(f"SELECT * FROM `{economy_table}` WHERE `client_id`= %s", self.client_id)
                 result = await cursor.fetchone()
                 if result is None:
-                    await cursor.execute(f"INSERT INTO `{economy_table}` (`client_id`) VALUES (%s)", self.client_id)
+                    await cursor.execute(f"INSERT INTO `{economy_table}` (`client_id`, `last_daily`) VALUES (%s, %s)", (self.client_id, self.last_daily))
                 else:
                     self.coins = result[1]
-                    self.multiplier = result[2]
-                    self.job = result[3]
-                    self.daily_streak = result[4]
-                    self.last_daily = result[5]
+                    self.bank = result[2]
+                    self.multiplier = result[3]
+                    self.job = result[4]
+                    self.daily_streak = result[5]
+                    self.last_daily = result[6]
         pool.close()
         await pool.wait_closed()
         return self
@@ -110,25 +112,27 @@ class EconomyUser:
         pool: Pool = await get_pool()
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(f"UPDATE `{economy_table}` SET `coins`= %s, `multiplier` = %s, `job` = %s, `daily_streak` = %s, `last_daily` = %s WHERE `client_id` = %s", (self.coins, self.multiplier, self.job, self.daily_streak, self.last_daily, self.client_id))
+                await cursor.execute(f"UPDATE `{economy_table}` SET `coins`= %s, `bank` = %s, `multiplier` = %s, `job` = %s, `daily_streak` = %s, `last_daily` = %s WHERE `client_id` = %s", (self.coins, self.bank, self.multiplier, self.job, self.daily_streak, self.last_daily, self.client_id))
         pool.close()
         await pool.wait_closed()
         return self
     
     @staticmethod
-    async def get_top_users() -> list:
+    async def get_top_users(sort_by: str = "coins") -> list:
         pool: Pool = await get_pool()
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(f"SELECT `client_id`, `coins`, `daily_streak` FROM `{economy_table}` ORDER BY `coins` DESC LIMIT 10")
+                await cursor.execute(f"SELECT `client_id`, `coins`, `daily_streak` FROM `{economy_table}` ORDER BY `{sort_by}` DESC LIMIT 10")
                 results = await cursor.fetchall()
         pool.close()
         await pool.wait_closed()
         return results
     
-    async def add_data(self, coins: int = None, multiplier: float = None, job: str = None, daily_streak: int = None, last_daily = None) -> object:
+    async def add_data(self, coins: int = None, bank: int = None, multiplier: float = None, job: str = None, daily_streak: int = None, last_daily = None) -> object:
         if coins:
             self.coins += coins
+        if bank:
+            self.bank += bank
         if multiplier:
             self.multiplier = multiplier
         if job:
