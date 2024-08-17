@@ -25,7 +25,7 @@ async def generate_welcome_card(user: discord.User, guild: discord.Guild):
     background.paste(profile, (405, 195))
 
     background.text(((960/2), 400), f"Willkommen, {user.name}", font=poppins, color="#282828", align="center")
-    background.text((15, 500), f"#{(member_count - 3)}", font=poppins_small, color="#e3e3e3ff", align="left")
+    background.text((15, 500), f"#{(member_count - 2)}", font=poppins_small, color="#e3e3e3ff", align="left")
 
     return discord.File(fp=background.image_bytes, filename="welcomecard.png")
 

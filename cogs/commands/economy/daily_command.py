@@ -27,7 +27,7 @@ class daily_command(commands.Cog):
             await economy_user.add_data(coins=coins,last_daily=last_daily,daily_streak=daily_streak)
             await interaction.response.send_message(f"✅ Du hast erfolgreich deine tägliche Belohnung gesammelt und {coins} 🪙 erhalten. Deine tägliche Serie liegt jetzt bei {daily_streak}/7.")
         else:
-            await interaction.response.send_message("⌛ Du kannst erst morgen wieder deine tägliche Belohnung absammeln.", ephemeral=True)
+            await interaction.response.send_message("⌛ Du kannst erst morgen wieder deine tägliche Belohnung einsammeln.", ephemeral=True)
 
 async def setup(client:commands.Bot) -> None:
     await client.add_cog(daily_command(client))

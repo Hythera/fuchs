@@ -2,9 +2,37 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import asyncio
+import json
+from easy_pil import Editor, Canvas, Font, load_image
 
 from main import config
 from database.models import LevelUser
+
+with open("json/list_images.json", 'r', encoding='utf-8') as file:
+    images = json.load(file)
+
+async def generate_card(client: commands.Bot, top_users: list) -> discord.File:
+    background = Editor("images/leaderboard_background.png")
+
+    poppins = Font.poppins(size=40)
+    poppins_small = Font.poppins(size=30)
+    poppins_huge = Font.poppins(size=100)
+
+    pos = 1
+    for user in top_users:
+        discord_user = client.get_user(user[0])
+        if discord_user.avatar:
+            profile_picture = load_image(str(discord_user.avatar.url))
+        else:
+            profile_picture = load_image(images["standard_profile_picture"])
+        user_profile = Editor(profile_picture).resize((70, 70))
+        background.paste(user_profile, (0, 70*(pos-1)+(5*(pos-1))))
+        background.text((80, (70)*(pos-1)+25), f"#{pos} {discord_user.name} • {int((user[1] / 50) ** (1 / 1.5))}", font=poppins_small, color="#282828")
+        pos += 1
+        
+
+    return discord.File(fp=background.image_bytes, filename="leaderboard.png")
+    
 
 class level_leaderboard_command(commands.Cog):
     def __init__(self, client: commands.Bot):
@@ -16,20 +44,12 @@ class level_leaderboard_command(commands.Cog):
     async def level_leaderboard(self, interaction: discord.Interaction):
         await interaction.response.defer()
         level_user = await LevelUser(interaction.user.id).load()
-        top_raw = await level_user.get_top_users()
-        
-        user_list = ""
-        pos = 1  
-        for u in top_raw:
-            user: discord.User = self.client.get_user(u[0])
-            if user:
-                user_list += f"**#{pos}** • {user.name} • {int((u[1] / 50) ** (1 / 1.5))}\n"
-            else:
-                user_list += f"**#{pos}** • `Null` • {int((u[1] / 50) ** (1 / 1.5))}\n"
-            pos += 1
-        embed = discord.Embed(title="Level Leaderboard", description=user_list, color=0xa7acb4)
-        embed.set_thumbnail(url=interaction.guild.icon.url)
-        await interaction.edit_original_response(embed=embed)
+        top_users = await level_user.get_top_users()
+        file = await generate_card(self.client, top_users)
+        embed = discord.Embed(title="Level Leaderboard", color=0x6d6f78)
+        embed.set_image(url="attachment://leaderboard.png")
+    
+        await interaction.edit_original_response(embed=embed, attachments=[file])
 
 async def setup(client:commands.Bot) -> None:
     await client.add_cog(level_leaderboard_command(client))

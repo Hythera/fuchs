@@ -18,7 +18,7 @@ class work_command(commands.Cog):
         economy_user = await EconomyUser(interaction.user.id).load()
         coins = int(random.randint(100,200)*economy_user.multiplier)
         await economy_user.add_data(coins=coins)
-        await interaction.response.send_message(f"✅ Du hast etwas gearbeitet und {coins} 🪙 bekommen")
+        await interaction.response.send_message(f"✅ Du hast wieder angefangen zu arbeiten. Komm in einer Stunde zurück, um deine Belohnung zu erhalten. Für deine letzte Arbeit hast du {coins} 🪙 erhalten.")
 
 async def setup(client:commands.Bot) -> None:
     await client.add_cog(work_command(client))
