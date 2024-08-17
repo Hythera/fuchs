@@ -21,13 +21,10 @@ async def generate_card(client: commands.Bot, top_users: list) -> discord.File:
     pos = 1
     for user in top_users:
         discord_user = client.get_user(user[0])
-        if discord_user.avatar:
-            profile_picture = load_image(str(discord_user.avatar.url))
-        else:
-            profile_picture = load_image(images["standard_profile_picture"])
+        profile_picture = load_image(str(discord_user.display_avatar))
         user_profile = Editor(profile_picture).resize((70, 70))
         background.paste(user_profile, (0, 70*(pos-1)+(5*(pos-1))))
-        background.text((80, (70)*(pos-1)+25), f"#{pos} {discord_user.name} • {int((user[1] / 50) ** (1 / 1.5))}", font=poppins_small, color="#282828")
+        background.text((80, (70+5)*(pos-1)+25), f"#{pos} {discord_user.name} • {int((user[1] / 50) ** (1 / 1.5))}", font=poppins_small, color="#282828")
         pos += 1
         
 

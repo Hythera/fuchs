@@ -67,8 +67,6 @@ Als nächstes startest du die APP, indem du die main.py ausführst und alle Abh�
 
 ```json
 {
-    "standard_profile_picture": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/images/standard_profile_picture.png",
-
     "interface_card": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/images/card.png",
 
     "grey_ticket_line": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/line_icons/ticket_grey.png",

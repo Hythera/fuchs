@@ -19,10 +19,9 @@ async def generate_card(user: discord.User, xp, xp_next, xp_last, level, positio
 
     background = Editor("images/level_background.png")
 
-    if user.avatar:
-        profile_picture = load_image(str(user.avatar.url))
-    else:
-        profile_picture = load_image(images["standard_profile_picture"])
+
+    profile_picture = load_image(str(user.display_avatar))
+
     profile = Editor(profile_picture).resize((150, 150)).circle_image()
 
     poppins = Font.poppins(size=40)
