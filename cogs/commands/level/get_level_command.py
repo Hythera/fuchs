@@ -2,11 +2,10 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import json
+from easy_pil import Editor, Canvas, Font, load_image
 
 from database.models import LevelUser
 from main import config
-
-from easy_pil import Editor, Canvas, Font, load_image
 
 with open("json/list_images.json", 'r', encoding='utf-8') as file:
     images = json.load(file)
