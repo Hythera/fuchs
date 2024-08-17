@@ -33,19 +33,19 @@ database_name = discord_app
 ### 1.2.2 Config Datei
 Erstelle nun eine Datei namens `config.json` und fülle sie mit deinen Konfigurationen
 ```json
-{ 
+{
     "guild_id": 1234567890123456789,
-  
+
     "join_role": 1234567890123456789,
 
     "welcome_channel": 1234567890123456789,
-  
+
     "ticket_category": 1234567890123456789,
     "ticket_staff": [1234567890123456789,1234567890123456789],
-    
+
     "join_channel": 1234567890123456789,
     "temp_chanels_category": 1234567890123456789,
-  
+
     "counting_channel": 1234567890123456789,
 
     "daily_rewards": {
@@ -58,9 +58,8 @@ Erstelle nun eine Datei namens `config.json` und fülle sie mit deinen Konfigura
     "6": 700,
     "7": 1000
     },
-  
+
     "bot_status": "🦊 Fuchs"
-    
 }
 ```
 1.2.3 Json konfigurieren
@@ -69,6 +68,8 @@ Als nächstes startest du die APP, indem du die main.py ausführst und alle Abh�
 ```json
 {
     "standard_profile_picture": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/images/standard_profile_picture.png",
+
+    "interface_card": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/images/card.png",
 
     "grey_ticket_line": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/line_icons/ticket_grey.png",
     "red_ticket_line": "https://raw.githubusercontent.com/Blackstonecoden/Fuchs/main/line_icons/ticket_red.png",
