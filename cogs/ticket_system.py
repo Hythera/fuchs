@@ -61,6 +61,10 @@ class TicketMenu(discord.ui.Select):
         self.client = client
 
     async def callback(self, interaction: discord.Interaction):
+        self.view.clear_items()
+        self.view.add_item(TicketMenu(self.client))
+        await interaction.message.edit(view=self.view)
+        
         value = self.values[0]
         if value == "community_server_bewerbung":
             if self.client.storage["community_server_status"] == "False":
@@ -109,9 +113,7 @@ class TicketMenu(discord.ui.Select):
             self.client.ticket_list[str(ticket_channel.id)] = {"ticket_owner": str(interaction.user.id),"created_at": int(time.time())}
             save_to_json("json/tickets.json", self.client.ticket_list)
 
-        self.view.clear_items()
-        self.view.add_item(TicketMenu(self.client))
-        await interaction.message.edit(view=self.view)
+
 
 class StaffAppModal(ui.Modal):
     def __init__(self, client:commands.Bot, value):
