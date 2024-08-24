@@ -24,9 +24,9 @@ class counting_system(commands.Cog):
                 if message.content == str(self.client.storage["counting_current_number"]):
                     self.client.storage["counting_current_number"] += 1
                     self.client.storage["counting_last_user"] = message.author.id
-                    if self.client.storage["counting_current_number"]%1000 == 0:
+                    if (self.client.storage["counting_current_number"]-1)%1000 == 0:
                         await message.add_reaction("🏆") 
-                    elif self.client.storage["counting_current_number"]%100 == 0:
+                    elif (self.client.storage["counting_current_number"]-1)%100 == 0:
                         await message.add_reaction("☑") 
                     else:
                         await message.add_reaction("✅")

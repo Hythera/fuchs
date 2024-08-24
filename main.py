@@ -50,7 +50,7 @@ async def on_tree_error(interaction: discord.Interaction, error: app_commands.Ap
                 await interaction.response.send_message(content=f"⌛ Bite warte **{round(error.retry_after/60)}** Minuten, bevor du diesen Befehl noch einmal verwenden kannst.", ephemeral=True)
         else:
             if interaction.command.name == "work":
-                await interaction.response.send_message(content=f"⌛ Du arbeitest bereits. Warte **{round(error.retry_after/60)}** Sekunden um deine Belohnung abzuholen.", ephemeral=True)
+                await interaction.response.send_message(content=f"⌛ Du arbeitest bereits. Warte **{round(error.retry_after)}** Sekunden um deine Belohnung abzuholen.", ephemeral=True)
             else:                
                 await interaction.response.send_message(content=f"⌛ Bite warte **{round(error.retry_after)}** Sekunden, bevor du diesen Befehl noch einmal verwenden kannst.", ephemeral=True)
 
