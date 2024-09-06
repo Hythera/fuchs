@@ -16,6 +16,8 @@ def convert(number: int) -> str:
         return f"{number // 1000}k"
     elif number >= 1000:
         return f"{(number / 1000):.1f}k"
+    elif number < 0:
+        return "∞"
     else:
         return str(number)
 
@@ -40,7 +42,7 @@ class balance_top_command(commands.Cog):
 
                 user_list += f"**#{pos}** • {user.name} • {coins} 🪙\n"
             else:
-                user_list += f"**#{pos}** • `Null` • {coins} 🪙\n"
+                user_list += f"**#{pos}** • `Null` • None 🪙\n"
             pos += 1
         embed = discord.Embed(title="Top Coins", description=user_list, color=0xa7acb4)
         embed.set_thumbnail(url=interaction.guild.icon.url)

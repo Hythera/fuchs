@@ -122,7 +122,10 @@ class EconomyUser:
         pool: Pool = await get_pool()
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(f"SELECT `client_id`, `coins`, `daily_streak` FROM `{economy_table}` ORDER BY `{sort_by}` DESC LIMIT 10")
+                if sort_by not in ["coins", "daily_streak"]:
+                    raise ValueError("Invalid sort_by value")
+                query = f"""SELECT `client_id`, `{sort_by}`, `daily_streak` FROM `{economy_table}` ORDER BY CASE WHEN `{sort_by}` = -1 THEN 1 ELSE 0 END DESC, `{sort_by}` DESC LIMIT 10"""
+                await cursor.execute(query)
                 results = await cursor.fetchall()
         pool.close()
         await pool.wait_closed()
