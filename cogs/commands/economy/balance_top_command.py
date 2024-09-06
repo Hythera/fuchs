@@ -2,9 +2,22 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import asyncio
+import math
 
 from main import config
 from database.models import EconomyUser
+
+def convert(number: int) -> str:
+    if number >= 10**9: 
+        exponent = int(math.log10(number))
+        mantissa = number / 10**exponent
+        return f"{mantissa:.1f}E+{exponent}"
+    elif number >= 10000:
+        return f"{number // 1000}k"
+    elif number >= 1000:
+        return f"{(number / 1000):.1f}k"
+    else:
+        return str(number)
 
 class balance_top_command(commands.Cog):
     def __init__(self, client: commands.Bot):
@@ -23,12 +36,7 @@ class balance_top_command(commands.Cog):
         for u in top_raw:
             user: discord.User = self.client.get_user(u[0])
             if user:
-                if u[1] >= 10000:
-                    coins = f"{u[1] // 1000}k"
-                elif u[1] >= 1000:
-                    coins = f"{(u[1] / 1000):.1f}k"
-                else:
-                    coins = u[1]
+                coins = convert(u[1])
 
                 user_list += f"**#{pos}** • {user.name} • {coins} 🪙\n"
             else:

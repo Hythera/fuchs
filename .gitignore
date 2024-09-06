@@ -2,6 +2,7 @@
 /.venv
 /json
 /testing
+/files
 .env
 config.json
 __pycache__
