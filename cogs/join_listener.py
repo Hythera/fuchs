@@ -43,7 +43,8 @@ class join_role(commands.Cog):
         file = await generate_welcome_card(member, guild)
 
         channel: discord.TextChannel  = await self.client.fetch_channel(config["welcome_channel"])
-        await channel.send(content=f"{member.mention}",file=file)
+        message = await channel.send(content=f"{member.mention}",file=file)
+        await message.add_reaction("🥳")
 
 async def setup(client:commands.Bot) -> None:
     await client.add_cog(join_role(client))
